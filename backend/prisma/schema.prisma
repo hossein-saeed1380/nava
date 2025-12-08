@@ -1,17 +1,17 @@
 generator client {
-  provider        = "prisma-client"
-  output          = "../src/generated/prisma"
-  moduleFormat    = "cjs"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
-  provider        = "postgresql"
+  provider = "postgresql"
 }
 
 model AiFeatures {
-  id        Int         @default(autoincrement()) @id
-  firstname String?      
+  id        Int     @id @default(autoincrement())
+  firstname String?
   lastname  String?
   email     String?
-  phone     String           
+  phone     String
 }

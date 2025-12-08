@@ -33,6 +33,9 @@ export default function Home() {
     }
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isWebSearchLoading, setIsWebSearchLoading] = useState(false);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-stone-700">
       <div className="w-full max-w-md bg-stone-600 rounded shadow p-6 flex flex-col gap-6">
@@ -51,10 +54,56 @@ export default function Home() {
             Send
           </button>
         </form>
+        {isLoading && <p>Loading...</p>}
+        {isWebSearchLoading && <p>Web Search Loading...</p>}
         <div className="flex flex-col gap-2">
-          {textResponse.map((text: any, idx: number) => (
-            <>{text}</>
-          ))}
+          {textResponse.map((responseObject: any) => {
+            const idx = responseObject.sequence_number;
+            if (responseObject?.type === "response.created") {
+              return null;
+            }
+            if (responseObject?.type === "response.in_progress") {
+              setIsLoading(true);
+              return null;
+            }
+            if (responseObject?.type === "response.output_item.added") {
+              return null;
+            }
+            if (
+              responseObject?.type === "response.web_search_call.in_progress"
+            ) {
+              setIsWebSearchLoading(true);
+              return null;
+            }
+            if (responseObject?.type === "response.web_search_call.searching") {
+              setIsWebSearchLoading(true);
+              return null;
+            }
+            if (responseObject?.type === "response.web_search_call.completed") {
+              setIsWebSearchLoading(false);
+              return null;
+            }
+            if (responseObject?.type === "response.output_item.done") {
+              setIsLoading(false);
+              return null;
+            }
+            if (responseObject?.type === "response.content_part.added") {
+              return null;
+            }
+            if (responseObject?.type === "response.content_part.done") {
+              return null;
+            }
+            if (responseObject?.type === "response.output_text.delta") {
+              return <>{responseObject?.delta}</>;
+            }
+            if (responseObject?.type === "response.output_text.done") {
+              return null;
+            }
+            if (responseObject?.type === "response.completed") {
+              return null;
+            }
+            return null;
+          })}
         </div>
       </div>
     </div>
