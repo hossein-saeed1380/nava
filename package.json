@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@nestjs/microservices": "^11.1.9",
-    "ioredis": "^5.8.2"
-  }
-}

@@ -255,17 +255,17 @@ export type AiFeaturesOrderByWithRelationInput = {
 
 export type AiFeaturesWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  phone?: string
   AND?: Prisma.AiFeaturesWhereInput | Prisma.AiFeaturesWhereInput[]
   OR?: Prisma.AiFeaturesWhereInput[]
   NOT?: Prisma.AiFeaturesWhereInput | Prisma.AiFeaturesWhereInput[]
   firstname?: Prisma.StringNullableFilter<"AiFeatures"> | string | null
   lastname?: Prisma.StringNullableFilter<"AiFeatures"> | string | null
   email?: Prisma.StringNullableFilter<"AiFeatures"> | string | null
-  phone?: Prisma.StringFilter<"AiFeatures"> | string
   input?: Prisma.StringFilter<"AiFeatures"> | string
   createdAt?: Prisma.DateTimeFilter<"AiFeatures"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AiFeatures"> | Date | string
-}, "id">
+}, "id" | "phone">
 
 export type AiFeaturesOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

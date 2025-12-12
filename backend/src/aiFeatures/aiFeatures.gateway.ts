@@ -1,11 +1,11 @@
 import {
+  ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
-  WsResponse,
 } from '@nestjs/websockets';
 import { AiFeaturesService } from './aiFeatures.service';
-import { from, map, Observable } from 'rxjs';
+import { Socket } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
@@ -17,12 +17,15 @@ export class AiFeaturesGateway {
   constructor(private readonly aiFeaturesService: AiFeaturesService) {}
 
   @SubscribeMessage('voice')
-  async handleAudio(client: any, payload: any): Promise<string> {
-    return await this.aiFeaturesService.takeVoice(payload);
+  async handleAudio(
+    @MessageBody() data: any,
+    @ConnectedSocket() client: Socket,
+  ): Promise<string> {
+    return await this.aiFeaturesService.takeVoice(data, client);
   }
 
   @SubscribeMessage('text')
-  onEvent(@MessageBody() data: string) {
-    return this.aiFeaturesService.takeText(data);
+  onEvent(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
+    return this.aiFeaturesService.takeText(data, client);
   }
 }

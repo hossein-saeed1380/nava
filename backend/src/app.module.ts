@@ -2,9 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AiFeaturesModule } from './aiFeatures/aiFeatures.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { OpenaiModule } from './openai/openai.module';
+import { MailModule } from './mail/mail.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -16,6 +19,23 @@ import { OpenaiModule } from './openai/openai.module';
     AiFeaturesModule,
     PrismaModule,
     OpenaiModule,
+    MailModule,
+    CacheModule.registerAsync({
+      isGlobal: true,
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const store = await redisStore({
+          socket: {
+            host: configService.get<string>('REDIS_HOST'),
+            port: parseInt(configService.get<string>('REDIS_PORT')!),
+          },
+        });
+        return {
+          store: () => store,
+        };
+      },
+      inject: [ConfigService],
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

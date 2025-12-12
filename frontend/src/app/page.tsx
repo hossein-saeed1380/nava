@@ -14,7 +14,7 @@ export default function Home() {
     setSocket(socket);
 
     socket.on("text", (message: any) => {
-      setTextResponse((prev: any) => [...prev, message]);
+      setTextResponse((prev: any) => [...prev, JSON.parse(message)]);
     });
 
     return () => {
