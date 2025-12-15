@@ -9,18 +9,19 @@ datasource db {
 }
 
 model User {
-  id        Int         @id @default(autoincrement())
-  username  String      @unique()
-  email     String      @unique()
-  phone     String      @unique()
+  id        Int      @id @default(autoincrement())
+  username  String   @unique()
+  email     String   @unique()
+  phone     String   @unique()
   firstname String?
   lastname  String?
   password  String
-  role      String      @default("user")
+  role      String   @default("user")
   aiHistory AiHistory[]
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
+
 
 model AiHistory {
   id        Int      @id @default(autoincrement())
@@ -30,3 +31,4 @@ model AiHistory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
